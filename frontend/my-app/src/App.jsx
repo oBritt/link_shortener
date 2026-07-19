@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 function App() {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const [url, setUrl] = useState("");
   const [response, setResponse] = useState("");
 
@@ -9,7 +11,7 @@ function App() {
 
   async function handleSubmit() {
     try {
-      const res = await fetch("http://localhost:8000/shorten", {
+      const res = await fetch(`${backendUrl}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +32,7 @@ function App() {
   async function handleStats() {
     const ending = shortUrl.split("/").pop();
     try {
-      const res = await fetch(`http://localhost:8000/stats/${ending}`, {
+      const res = await fetch(`${backendUrl}/stats/${ending}`, {
         method: "GET",
       });
 
