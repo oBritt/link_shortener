@@ -58,3 +58,6 @@ if __name__ == "__main__":
     b = ShortenerResponse(
         ending="1234678A"
     )
+
+class StatsResponse(BaseModel):
+    clicks: int    
