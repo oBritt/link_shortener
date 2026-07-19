@@ -34,16 +34,6 @@ class ShortenerRequest(BaseModel):
         """
         return v
     
-    @field_validator("url")
-    @classmethod
-    def validate_url(cls, v):
-        if not v.startswith("https://"):
-            raise ValueError("URL must start with https://")
-        
-        if not re.search(r"\.[a-zA-Z]+$", v):
-            raise ValueError("Invalid URL")
-        return v
-
 
 
 class ShortenerResponse(BaseModel):
