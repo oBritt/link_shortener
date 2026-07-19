@@ -15,9 +15,9 @@ class Repository:
 
 
     @classmethod
-    async def get_url(cls, shortened: str, password: Optional[str]) -> str:
+    async def get_url(cls, shortened: str, password: Optional[str], ip: Optional[str]) -> str:
         async with async_session_factory() as session:
-            orm = await get_by_shortened(shortened, session)
+            orm = await get_by_shortened(shortened, session, True, ip)
 
         if orm is None:
             raise ValueError("Link not found")
@@ -33,3 +33,16 @@ class Repository:
             raise ValueError("Incorrect password")
 
         return orm.link
+    
+    @classmethod
+    async def get_stats(cls, shortened: str) -> dict:
+        async with async_session_factory() as session:
+            orm = await get_by_shortened(shortened, session, False, None)
+
+        if orm is None:
+            raise ValueError("Link not found")
+
+        return {
+            "clicks": orm.clicks,
+            "ip": orm.ip
+        }

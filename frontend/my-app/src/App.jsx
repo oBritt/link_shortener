@@ -1,15 +1,18 @@
 import { useState } from "react";
 
 function App() {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const [url, setUrl] = useState("");
   const [response, setResponse] = useState("");
 
   const [shortUrl, setShortUrl] = useState("");
   const [clicks, setClicks] = useState(0);
+  const [ip, setIp] = useState([]);
 
   async function handleSubmit() {
     try {
-      const res = await fetch("http://localhost:8000/shorten", {
+      const res = await fetch(`${backendUrl}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -20,7 +23,8 @@ function App() {
       });
 
       const data = await res.json();
-      setResponse(data.url);
+      setResponse(backendUrl + '/' + data.ending);
+      console.log(data);
     } catch (error) {
       setResponse("Something went wrong.");
       console.error(error);
@@ -30,7 +34,7 @@ function App() {
   async function handleStats() {
     const ending = shortUrl.split("/").pop();
     try {
-      const res = await fetch(`http://localhost:8000/stats/${ending}`, {
+      const res = await fetch(`${backendUrl}/stats/${ending}`, {
         method: "GET",
       });
 
@@ -40,6 +44,7 @@ function App() {
 
       const data = await res.json();
       setClicks(data.clicks);
+      setIp(data.ip || []);
     } catch (error) {
       setClicks("Something went wrong.");
       console.error(error);
@@ -63,11 +68,12 @@ function App() {
       <p>Get Stats</p>
       <input type="text" placeholder="Enter your shortened link to get stats" value={shortUrl}
         onChange={(e) => setShortUrl(e.target.value)}/>
-      <button onClick={() => handleStats(shortUrl)}>
+      <button onClick={() => handleStats()}>
       Get Stats
       </button>
 
       <p>Clicks: {clicks}</p>
+      <p>IP Addresses: {ip.join(", ")}</p>
     </div>
   );
 }

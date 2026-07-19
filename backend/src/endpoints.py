@@ -1,6 +1,7 @@
 
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import Request, APIRouter, HTTPException, Depends
+from fastapi.responses import RedirectResponse
 from typing import Optional
 from src.model import (
     ShortenerRequest,
@@ -28,12 +29,14 @@ async def shorten_url(request: ShortenerRequest) -> ShortenerResponse:
     return ShortenerResponse(ending=shortened_url)
 
 
-@router.get("/get_link")
-async def get_link(request: LinkRequest = Depends()) -> LinkResponse:
+@router.get("/{ending}")
+async def get_link(link_request: LinkRequest = Depends(), http_request: Request = None) -> LinkResponse:
     try:
-        password = request.password.get_secret_value() if request.password else None
-        url = await Repository.get_url(request.ending, password)
-        return LinkResponse(url=HttpUrl(url))
+        ip = http_request.client.host if http_request.client else None
+        password = link_request.password.get_secret_value() if link_request.password else None
+        url = await Repository.get_url(link_request.ending, password, ip)
+        #return LinkResponse(url=HttpUrl(url))
+        return RedirectResponse(url=url)
 
     except ValueError as e:
         raise HTTPException(
@@ -43,4 +46,14 @@ async def get_link(request: LinkRequest = Depends()) -> LinkResponse:
 
 @router.get("/stats/{ending}")
 async def get_stats(ending: str) -> StatsResponse:
-    return StatsResponse(ip=None, clicks=0)
+    try:
+        stats = await Repository.get_stats(ending)
+        return StatsResponse(ip=stats["ip"], clicks=stats["clicks"])
+    
+    except ValueError as e:
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )    
+    
+    
