@@ -2,7 +2,7 @@
 
 from database import Base
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import Integer, String
+from sqlalchemy import JSON, Integer, String
 from typing import Optional
 
 class LinksOrm(Base):
@@ -34,4 +34,10 @@ class LinksOrm(Base):
         Integer,
         nullable=False,
         default=0
+    )
+
+    ip: Mapped[Optional[list[str]]] = mapped_column(
+        JSON,
+        nullable=True,
+        default=list
     )
