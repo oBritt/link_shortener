@@ -6,7 +6,8 @@ from src.model import (
     ShortenerRequest,
     ShortenerResponse,
     LinkRequest,
-    LinkResponse
+    LinkResponse,
+    StatsResponse
 )
 from pydantic import HttpUrl
 
@@ -39,3 +40,7 @@ async def get_link(request: LinkRequest = Depends()) -> LinkResponse:
             status_code=404,
             detail=str(e)
         )
+
+@router.get("/stats/{ending}")
+async def get_stats(ending: str) -> StatsResponse:
+    return StatsResponse(ip=None, clicks=0)
