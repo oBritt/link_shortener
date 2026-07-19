@@ -29,3 +29,9 @@ class LinksOrm(Base):
         String,
         nullable=False
     )
+
+    clicks: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0
+    )
