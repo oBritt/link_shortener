@@ -8,6 +8,7 @@ function App() {
 
   const [shortUrl, setShortUrl] = useState("");
   const [clicks, setClicks] = useState(0);
+  const [ip, setIp] = useState([]);
 
   async function handleSubmit() {
     try {
@@ -22,7 +23,8 @@ function App() {
       });
 
       const data = await res.json();
-      setResponse(data.url);
+      setResponse(backendUrl + '/' + data.ending);
+      console.log(data);
     } catch (error) {
       setResponse("Something went wrong.");
       console.error(error);
@@ -42,6 +44,7 @@ function App() {
 
       const data = await res.json();
       setClicks(data.clicks);
+      setIp(data.ip || []);
     } catch (error) {
       setClicks("Something went wrong.");
       console.error(error);
@@ -65,11 +68,12 @@ function App() {
       <p>Get Stats</p>
       <input type="text" placeholder="Enter your shortened link to get stats" value={shortUrl}
         onChange={(e) => setShortUrl(e.target.value)}/>
-      <button onClick={() => handleStats(shortUrl)}>
+      <button onClick={() => handleStats()}>
       Get Stats
       </button>
 
       <p>Clicks: {clicks}</p>
+      <p>IP Addresses: {ip.join(", ")}</p>
     </div>
   );
 }
