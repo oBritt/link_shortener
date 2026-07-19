@@ -7,7 +7,6 @@ class ShortenerRequest(BaseModel):
     url: HttpUrl
     password: Optional[SecretStr] = None
 
-
     @field_validator("password")
     @classmethod
     def validate_password(cls, v):
@@ -19,6 +18,7 @@ class ShortenerRequest(BaseModel):
         if len(password) < 8:
             raise ValueError("Password must be at least 8 characters")
 
+        """
         if not any(char in string.ascii_uppercase for char in password):
             raise ValueError("Password must contain an uppercase letter")
 
@@ -30,8 +30,9 @@ class ShortenerRequest(BaseModel):
 
         if not any(char in string.punctuation for char in password):
             raise ValueError("Password must contain a special character")
-
+        """
         return v
+
 
 
 class ShortenerResponse(BaseModel):
@@ -44,10 +45,17 @@ class ShortenerResponse(BaseModel):
         if len(v) != 8:
             raise ValueError("Length must be 8 characters")
 
-        if not all(char in string.ascii_lowercase or char in string.digits for char in v):
+        if not all(char in string.ascii_letters or char in string.digits for char in v):
             raise ValueError("Password must contain an lowercase letter or digits")
 
         return v
+
+
+class LinkRequest(ShortenerResponse):
+    password: Optional[SecretStr] = None
+
+class LinkResponse(BaseModel):
+    url: HttpUrl
 
 if __name__ == "__main__":
     a = ShortenerRequest(

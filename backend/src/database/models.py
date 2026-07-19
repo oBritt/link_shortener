@@ -1,6 +1,6 @@
 
 
-from database import Base
+from src.database.database import Base
 from sqlalchemy.orm import mapped_column, Mapped
 from sqlalchemy import Integer, String
 from typing import Optional
@@ -25,7 +25,8 @@ class LinksOrm(Base):
         default=None
     )
 
-    shortened: Mapped[str] = mapped_column(
+    shortened: Mapped[Optional[str]] = mapped_column(
         String,
-        nullable=False
+        nullable=True,
+        default=None
     )

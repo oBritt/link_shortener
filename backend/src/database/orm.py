@@ -1,6 +1,6 @@
 
 
-from database import Base, sync_engine, session_factory
+from src.database.database import Base, sync_engine
 from sqlalchemy import inspect
 import logging
 
