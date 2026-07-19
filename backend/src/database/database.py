@@ -1,8 +1,9 @@
+
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-# SQLite sync database
 sync_engine = create_engine(
     "sqlite:///./database.db",
     echo=False,
