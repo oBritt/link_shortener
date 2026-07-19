@@ -23,4 +23,4 @@ async def get_url(ending: str):
 
 @router.get("/stats/{ending}")
 async def get_stats(ending: str) -> StatsResponse:
-    return StatsResponse(clicks=0)
+    return StatsResponse(ip=None, clicks=0)

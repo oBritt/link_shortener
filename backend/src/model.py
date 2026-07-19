@@ -2,6 +2,7 @@
 from pydantic import BaseModel, HttpUrl, SecretStr, field_validator
 from typing import Optional
 import string
+import re
 
 class ShortenerRequest(BaseModel):
     url: HttpUrl
@@ -32,6 +33,16 @@ class ShortenerRequest(BaseModel):
             raise ValueError("Password must contain a special character")
 
         return v
+    
+    @field_validator("url")
+    @classmethod
+    def validate_url(cls, v):
+        if not v.startswith("https://"):
+            raise ValueError("URL must start with https://")
+        
+        if not re.search(r"\.[a-zA-Z]+$", v):
+            raise ValueError("Invalid URL")
+        return v
 
 
 class ShortenerResponse(BaseModel):
@@ -48,6 +59,10 @@ class ShortenerResponse(BaseModel):
             raise ValueError("Password must contain an lowercase letter or digits")
 
         return v
+    
+class StatsResponse(BaseModel):
+    ip: Optional[list[str]]
+    clicks: int     
 
 if __name__ == "__main__":
     a = ShortenerRequest(
@@ -59,5 +74,4 @@ if __name__ == "__main__":
         ending="1234678A"
     )
 
-class StatsResponse(BaseModel):
-    clicks: int    
+   
