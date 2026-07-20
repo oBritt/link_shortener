@@ -1,6 +1,18 @@
 
 import './Mainpage.css';
 import { useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
+
+function QRCode({ url, size = 200 }) {
+  return (
+    <QRCodeCanvas
+      value={url}
+      size={size}
+      level="H"
+    />
+  );
+}
+
 
 function Mainpage() {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -64,6 +76,8 @@ function Mainpage() {
     }
   }
 
+
+
   return (
     <div className="App">
       <p>Shorten Your URL</p>
@@ -77,6 +91,7 @@ function Mainpage() {
       </button>
 
       <p>Shortened URL: {response}</p>
+      {response && <QRCode url={response} />}
 
       <br></br>
       <br></br>
