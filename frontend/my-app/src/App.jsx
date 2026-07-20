@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Mainpage from './Mainpage';
-import Redirectpage from './Redirectpage';
+import Redirectpage from './redirectpage/Redirectpage';
 
 function App() {
   return (
