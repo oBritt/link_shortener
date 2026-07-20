@@ -21,10 +21,15 @@ function Mainpage() {
   const [password, setPassword] = useState("");
   const [response, setResponse] = useState("");
   const [errorText, setErrorText] = useState("");
+  const [requirePassword, setRequirePassword] = useState(false);
 
-  const [shortUrl, setShortUrl] = useState("");
-  const [clicks, setClicks] = useState(0);
-  const [ip, setIp] = useState([]);
+  async function copyToClipboard() {
+    try {
+      await navigator.clipboard.writeText(response);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   async function handleSubmit() {
     try {
@@ -56,55 +61,57 @@ function Mainpage() {
     }
   }
 
-  async function handleStats() {
-    const ending = shortUrl.split("/").pop();
-    try {
-      const res = await fetch(`${backendUrl}/stats/${ending}`, {
-        method: "GET",
-      });
-
-      if (!res.ok) {
-      throw new Error("Failed to fetch stats");
-      }
-
-      const data = await res.json();
-      setClicks(data.clicks);
-      setIp(data.ip || []);
-    } catch (error) {
-      setClicks("Something went wrong.");
-      console.error(error);
-    }
-  }
-
-
-
   return (
     <div className="App">
       <p>Shorten Your URL</p>
-      <input type="text" placeholder="Enter URL to shorten" value={url}
+      <input type="text" className="url-input" placeholder="Enter URL to shorten" value={url}
         onChange={(e) => setUrl(e.target.value)}/>
-      <input type="password" placeholder="Enter password" value={password}
-        onChange={(e) => setPassword(e.target.value)}/>
+      <div className="checkbox-container">
+      <input
+        type="checkbox"
+        id="password-checkbox"
+        checked={requirePassword}
+        onChange={(e) => setRequirePassword(e.target.checked)}
+      />
+
+      <label htmlFor="password-checkbox">
+        Require Password
+      </label>
+      </div>
+
+      {requirePassword && (
+        <center>
+          <input
+            type="password"
+            id="password-input"
+            className="password-input"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </center>
+      )}
       <div id="error-text">{errorText}</div>
-      <button onClick={handleSubmit}>
+      <button className="submit-button" onClick={handleSubmit}>
       Submit
       </button>
 
-      <p>Shortened URL: {response}</p>
-      {response && <QRCode url={response} />}
+      {response && errorText == "" ? (
+        <div className="response-container">
+          <p>
+            Shortened URL:{" "}
+            <a href={response} target="_blank" rel="noopener noreferrer">
+              {response}
+            </a>
+          </p>
 
-      <br></br>
-      <br></br>
+          <button className="copy-button" onClick={copyToClipboard}>
+            Copy
+          </button>
 
-      <p>Get Stats</p>
-      <input type="text" placeholder="Enter your shortened link to get stats" value={shortUrl}
-        onChange={(e) => setShortUrl(e.target.value)}/>
-      <button onClick={() => handleStats()}>
-      Get Stats
-      </button>
-
-      <p>Clicks: {clicks}</p>
-      <p>IP Addresses: {ip.join(", ")}</p>
+          {/* <QRCode url={response} /> */}
+        </div>
+      ) : null}
     </div>
   );
 }
