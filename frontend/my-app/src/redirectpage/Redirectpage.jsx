@@ -27,7 +27,10 @@ function Redirectpage() {
       setSeconds(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          handleSubmit();
+          if (ran.current === false) {
+            ran.current = true;
+            handleSubmit();
+          }
           return 0;
         }
         return prev - 1;
