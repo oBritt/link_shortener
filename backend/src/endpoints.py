@@ -29,14 +29,14 @@ async def shorten_url(request: ShortenerRequest) -> ShortenerResponse:
     return ShortenerResponse(ending=shortened_url)
 
 
-@router.get("/{ending}")
+@router.get("/get_link")
 async def get_link(link_request: LinkRequest = Depends(), http_request: Request = None) -> LinkResponse:
     try:
         ip = http_request.client.host if http_request.client else None
         password = link_request.password.get_secret_value() if link_request.password else None
         url = await Repository.get_url(link_request.ending, password, ip)
-        #return LinkResponse(url=HttpUrl(url))
-        return RedirectResponse(url=url)
+        return LinkResponse(url=HttpUrl(url))
+        #return RedirectResponse(url=url)
 
     except ValueError as e:
         raise HTTPException(
