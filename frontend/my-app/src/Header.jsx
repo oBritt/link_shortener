@@ -1,4 +1,6 @@
 import './Header.css';
+import { Link } from "react-router-dom";
+
 
 function Header() {
 
@@ -8,13 +10,13 @@ function Header() {
         <h1>URL Shortener</h1>
 
         <div className="nav">
-          <a className="nav-button" href="/">
+          <Link className="nav-button" to="/">
             Home
-          </a>
+          </Link>
 
-          <a className="nav-button" href="/stats">
+          <Link className="nav-button" to="/stats">
             Stats
-          </a>
+          </Link>
         </div>
       </div>
     </header>
