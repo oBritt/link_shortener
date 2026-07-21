@@ -4,10 +4,12 @@ import "./Layout.css";
 function Layout({ children }) {
   return (
     <div className="page">
-      <Header />
-      <main>
-        {children}
-      </main>
+      <div className="window">
+        <Header />
+        <div className="window-content">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

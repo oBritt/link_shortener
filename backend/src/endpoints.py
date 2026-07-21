@@ -50,7 +50,10 @@ async def get_stats(request: StatsRequest = Depends()) -> StatsResponse:
     try:
         stats = await Repository.get_stats(request.ending)
         print(stats)
-        return StatsResponse(ip=stats["ip"], clicks=stats["clicks"])
+        return StatsResponse(ip=stats["ip"], 
+                             clicks=stats["clicks"], 
+                             link_created_at=stats["link_created_at"], 
+                             clicked_at=stats["clicked_at"])
     
     except ValueError as e:
         raise HTTPException(

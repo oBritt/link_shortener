@@ -1,13 +1,10 @@
 .redirect-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 480px) minmax(0, 1fr);
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 16px;
   min-height: 100vh;
-  min-width: 75vw;
-  padding: 40px 16px;
-  background: #f6f7f9;
-  box-sizing: border-box;
+  background: #008080; /* Win95 teal desktop */
+  padding: 20px;
 }
 
 .ad-rail {
