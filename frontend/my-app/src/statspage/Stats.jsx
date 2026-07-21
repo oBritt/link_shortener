@@ -6,6 +6,8 @@ function Stats() {
   const [ip, setIp] = useState();
   const [clicks, setClicks] = useState(0);
   const [shortUrl, setShortUrl] = useState("");
+  const [link_created_at, setLinkCreatedAt] = useState("");
+  const [clicked_at, setClickedAt] = useState("");
 
   async function handleStats() {
     const ending = shortUrl.split("/").pop();
@@ -25,6 +27,8 @@ function Stats() {
       const data = await res.json();
       setClicks(data.clicks);
       setIp(data.ip || []);
+      setLinkCreatedAt(new Date(data.link_created_at + "Z").toLocaleString());
+      setClickedAt(data.clicked_at || []);
     } catch (error) {
       setClicks("Something went wrong.");
       console.error(error);
@@ -44,6 +48,10 @@ function Stats() {
             <table className="stats-table">
                 <tbody>
                 <tr>
+                    <th>Link Created At</th>
+                    <td>{link_created_at}</td>
+                </tr>
+                <tr>
                     <th>Total Clicks</th>
                     <td>{clicks}</td>
                 </tr>
@@ -61,15 +69,17 @@ function Stats() {
                 <tr>
                     <th>#</th>
                     <th>IP Address</th>
+                    <th>Clicked At</th>
                 </tr>
                 </thead>
                 <tbody>
-                {ip.map((address, index) => (
-                    <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{address}</td>
+                  {ip.map((address, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>{address}</td>
+                      <td>{new Date(clicked_at[i] + "Z").toLocaleString()}</td>
                     </tr>
-                ))}
+                  ))}
                 </tbody>
             </table>
         </div>

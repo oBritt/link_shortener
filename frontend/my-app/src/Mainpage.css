@@ -12,6 +12,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  font-family: "MS Sans Serif", sans-serif;
 }
 
 #root {
@@ -23,20 +24,34 @@ body {
 
 .App {
   width: 500px;
-  padding: 30px;
-  background: rgb(255, 252, 241);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  margin-top: 5%;
+  margin: 50px auto;
+  
+
   text-align: center;
 }
 
-.url-input, .password-input {
-  width: 300px;
-  padding: 10px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.url-input{
+  background: white;
+
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+
+  padding: 4px;
+  font-family: inherit;
+}
+
+.password-input {
+  background: white;
+
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+
+  padding: 4px;
+  font-family: inherit;
 }
 
 .checkbox-container {
@@ -59,23 +74,45 @@ body {
 }
 
 .submit-button {
-  padding: 10px 20px;
-  background-color: #eef3e0;
-  color: rgb(39, 33, 33);
-  border: none;
-  border-radius: 4px;
+  background: #c0c0c0;
+
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+
+  padding: 5px 16px;
+
+  font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .copy-button {
-  padding: 10px 20px;
-  background-color: #eef3e0;
-  color: rgb(39, 33, 33);
-  border: none;
-  border-radius: 4px;
+  background: #c0c0c0;
+
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+
+  padding: 5px 16px;
+
+  font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+}
+
+.submit-button:active {
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+.copy-button:active {
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
 }
 
 .response-container {

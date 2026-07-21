@@ -1,4 +1,6 @@
 
+from datetime import datetime
+
 from pydantic import BaseModel, HttpUrl, SecretStr, field_validator
 from typing import Optional
 import string
@@ -53,7 +55,9 @@ class ShortenerResponse(BaseModel):
     
 class StatsResponse(BaseModel):
     ip: Optional[list[str]]
-    clicks: int     
+    clicks: int
+    link_created_at: datetime
+    clicked_at: list[datetime]   
 
 class StatsRequest(ShortenerResponse):
     pass
