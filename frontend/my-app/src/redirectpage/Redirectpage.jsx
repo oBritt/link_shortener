@@ -118,7 +118,7 @@ function Redirectpage() {
   return (
     <>
       {showModal && (
-        <PasswordModal onSubmit={handlePasswordSubmit} error={errorText} />
+        <PasswordModal onSubmit={handlePasswordSubmit} error={errorText} link={linkData} />
       )}
       <div className="redirect-layout">
         <AdRail images={AD_IMAGES_LEFT} label="Left" />

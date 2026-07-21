@@ -2,8 +2,9 @@
 
 from src.database.database import Base
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import JSON, Integer, String
+from sqlalchemy import Integer, String, ForeignKey, DateTime, func
 from typing import Optional
+from datetime import datetime
 
 class LinksOrm(Base):
     __tablename__ = "links"
@@ -31,14 +32,33 @@ class LinksOrm(Base):
         default=None
     )
 
-    clicks: Mapped[int] = mapped_column(
-        Integer,
-        nullable=False,
-        default=0
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now()
     )
 
-    ip: Mapped[Optional[list[str]]] = mapped_column(
-        JSON,
+
+class ClicksOrm(Base):
+    __tablename__ = "clicks"
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+
+    link_id: Mapped[int] = mapped_column(
+        ForeignKey(LinksOrm.id),
+        nullable=False
+    )
+
+    ip: Mapped[Optional[str]] = mapped_column(
+        String,
         nullable=True,
-        default=list
+        default=None
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now()
     )

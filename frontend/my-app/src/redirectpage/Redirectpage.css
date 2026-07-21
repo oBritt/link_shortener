@@ -4,6 +4,7 @@
   align-items: center;
   gap: 16px;
   min-height: 100vh;
+  min-width: 75vw;
   padding: 40px 16px;
   background: #f6f7f9;
   box-sizing: border-box;
@@ -53,6 +54,7 @@
 .redirect-page {
   grid-column: 2;
   position: relative;
+  display: block;
   justify-self: center;
   width: 100%;
   max-width: 480px;

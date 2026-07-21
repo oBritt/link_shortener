@@ -8,7 +8,8 @@ from src.model import (
     ShortenerResponse,
     LinkRequest,
     LinkResponse,
-    StatsResponse
+    StatsResponse,
+    StatsRequest
 )
 from pydantic import HttpUrl
 
@@ -44,10 +45,11 @@ async def get_link(link_request: LinkRequest = Depends(), http_request: Request 
             detail=str(e)
         )
 
-@router.get("/stats/{ending}")
-async def get_stats(ending: str) -> StatsResponse:
+@router.get("/stats")
+async def get_stats(request: StatsRequest = Depends()) -> StatsResponse:
     try:
-        stats = await Repository.get_stats(ending)
+        stats = await Repository.get_stats(request.ending)
+        print(stats)
         return StatsResponse(ip=stats["ip"], clicks=stats["clicks"])
     
     except ValueError as e:

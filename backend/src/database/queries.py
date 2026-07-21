@@ -2,7 +2,7 @@
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
-from src.database.models import LinksOrm
+from src.database.models import LinksOrm, ClicksOrm
 from src.database.utils import id_to_link, hash_password
 from sqlalchemy import select
 
@@ -22,17 +22,27 @@ async def shorten_url(link: str, password: Optional[str], session: AsyncSession)
     return shortened
 
 
-async def get_by_shortened(shortened: str, session: AsyncSession, need_to_upade: bool, ip: Optional[str]) -> Optional[LinksOrm]:
+async def get_by_shortened(shortened: str, session: AsyncSession) -> Optional[LinksOrm]:
     query = select(LinksOrm).where(LinksOrm.shortened==shortened)
     result = await session.execute(query)
     link = result.scalar_one_or_none()
-
-    if link and need_to_upade:
-        link.clicks += 1
-        if ip:
-            link.ip = link.ip or []
-            link.ip.append(ip)
-        await session.commit()
-        await session.refresh(link)
-
     return link
+
+
+async def add_click(link_id: int, ip: Optional[str], session: AsyncSession) -> None:
+    orm = ClicksOrm(
+        link_id=link_id,
+        ip=ip
+    )
+    session.add(orm)
+    await session.commit()
+
+
+async def get_clicks_by_link_id(link_id: int, session: AsyncSession) -> list[ClicksOrm]:
+    query = (
+        select(ClicksOrm)
+        .where(ClicksOrm.link_id==link_id)
+    )
+    result = await session.execute(query)
+    clicks = list(result.scalars().all())
+    return clicks

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import './PasswordModal.css';
 
-function PasswordModal({ onSubmit, error }) {
+function PasswordModal({ onSubmit, error, linkData }) {
   const [password, setPassword] = useState("");
 
   return (
@@ -21,6 +21,17 @@ function PasswordModal({ onSubmit, error }) {
             {error}
           </p>
         )}
+
+        {linkData && (
+          <p className="manual-link">
+            If nothing happens,{" "}
+            <a href={linkData} target="_blank" rel="noopener noreferrer">
+              click here
+            </a>{" "}
+            to continue.
+          </p>
+        )}
+        
 
         <button onClick={() => onSubmit(password)}>
           Submit

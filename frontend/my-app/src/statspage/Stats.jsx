@@ -10,7 +10,11 @@ function Stats() {
   async function handleStats() {
     const ending = shortUrl.split("/").pop();
     try {
-      const res = await fetch(`${backendUrl}/stats/${ending}`, {
+      const params = new URLSearchParams();
+      params.append("ending", ending);
+
+
+      const res = await fetch(`${backendUrl}/stats?${params}`, {
         method: "GET",
       });
 

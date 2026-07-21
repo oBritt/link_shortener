@@ -55,6 +55,9 @@ class StatsResponse(BaseModel):
     ip: Optional[list[str]]
     clicks: int     
 
+class StatsRequest(ShortenerResponse):
+    pass
+
 
 class LinkRequest(ShortenerResponse):
     password: Optional[SecretStr] = None
