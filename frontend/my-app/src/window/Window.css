@@ -1,0 +1,47 @@
+.window {
+  width: 600px;
+  background: #c0c0c0;
+}
+
+.window-content {
+  padding: 16px;
+}
+
+.window-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.window-wrapper-upper {
+  display: flex;
+  height: 5px;
+}
+
+.window-corner-upper-left {
+  width: 5px;
+}
+
+
+.window-upper-border {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.window-upper-border-visiable {
+  height: 3px;
+  background-color: white;
+}
+
+.window-corner-upper-right {
+  width: 5px;
+}
+
+.window-wrapper-lower {
+  display: flex;
+}
+
+.window-wrapper-lower {
+  display: flex;
+}

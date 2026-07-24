@@ -1,5 +1,18 @@
 
-body {
+html, body {
+  overflow: hidden;
+  height: 100%;
   margin: 0;
   padding: 0;
+  background-image: url("assets/back.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: Tahoma, "MS Sans Serif", sans-serif;
+}
+
+#root {
+  height: 100%;
 }

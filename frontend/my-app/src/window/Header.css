@@ -1,6 +1,6 @@
 .header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
 
   width: 100%;
@@ -11,11 +11,14 @@
 
   padding: 4px 8px;
   font-weight: bold;
+  cursor: move;
+  user-select: none;
 }
 
 .window-buttons {
   display: flex;
   gap: 2px;
+  justify-self: end;
 }
 
 .window-btn {
@@ -34,6 +37,22 @@
   cursor: pointer;
 }
 
+.drag-area {
+  justify-self: center;
+  cursor: move;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  user-select: none;
+}
+
+.nav {
+  justify-self: start;
+}
+
 .nav-button {
   display: inline-block;
 
@@ -43,6 +62,7 @@
 
   padding: 2px 12px;
   margin: 0;
+  margin-left: 5px;
 
   border-top: 2px solid white;
   border-left: 2px solid white;
@@ -51,6 +71,8 @@
 
   font-family: Tahoma, sans-serif;
   font-size: 12px;
+
+  cursor: pointer;
 }
 
 .nav-button:active {
