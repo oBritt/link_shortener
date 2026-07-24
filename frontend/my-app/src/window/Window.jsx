@@ -50,33 +50,59 @@ function Window({ children, headerLinks }) {
   return (
     <div className="window-wrapper"
       ref={windowRef}
+
       style={{ position: 'absolute', left: position.x, top: position.y }}
     >
       <div className="window-wrapper-upper">
         <div className="window-corner-upper-left">
-          <div className="window-corner-upper-left-visable"></div>
+          <div className="window-corner-upper-left-visiable"></div>
         </div>
         <div className="window-upper-border">
           <div className="window-upper-border-visiable"></div>
         </div>
         <div className="window-corner-upper-right">
-          <div className="window-corner-upper-right-visiable"></div>
+          <div className="window-corner-upper-right-visiable">
+            {
+              ["w", "w", "w", "w", "w", "d", "w", "d", "d"].map((p, i) => (
+                <div key={i} className={ p == "w" ? "corner-pixel-white" : "corner-pixel-dark"}>
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
       <div className="window-wrapper-middle">
-        <div className="window-left-border"></div>
+        <div className="window-left-border">
+          <div className="window-left-border-visiable"></div>
+        </div>
         <div className="window">
         <Header headerLinks={headerLinks} onMouseDown={handleMouseDown} />
           <div className="window-content">
             {children}
           </div>
         </div>
-        <div className="window-right-border"></div>
+        <div className="window-right-border">
+          <div className="window-right-border-visiable"></div>
+        </div>
       </div>
       <div className="window-wrapper-lower">
-        <div className="window-corner-lower-left"></div>
-        <div className="window-lower-border"></div>
-        <div className="window-corner-lower-right"></div>
+        <div className="window-corner-lower-left">
+          <div className="window-corner-lower-left-visiable">
+            {
+              ["w", "w", "w", "w", "w", "d", "w", "d", "d"].map((p, i) => (
+                <div key={i} className={ p == "w" ? "corner-pixel-white" : "corner-pixel-dark"}>
+                </div>
+              ))
+            }
+
+          </div>
+        </div>
+        <div className="window-lower-border">
+          <div className="window-lower-border-visiable"></div>
+        </div>
+        <div className="window-corner-lower-right">
+          <div className="window-corner-lower-right-visiable"></div>
+        </div>
       </div>
       
     </div>
