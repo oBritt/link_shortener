@@ -46,3 +46,9 @@ async def get_clicks_by_link_id(link_id: int, session: AsyncSession) -> list[Cli
     result = await session.execute(query)
     clicks = list(result.scalars().all())
     return clicks
+
+async def get_all_links(session: AsyncSession) -> list[LinksOrm]:
+    query = select(LinksOrm)
+    result = await session.execute(query)
+    links = list(result.scalars().all())
+    return links

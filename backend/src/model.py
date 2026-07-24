@@ -62,6 +62,16 @@ class StatsResponse(BaseModel):
 class StatsRequest(ShortenerResponse):
     pass
 
+class AppStatsRequest(BaseModel):
+    secret: str
+
+class AppStatsResponse(BaseModel):
+    total_links: int
+    total_clicks: int
+    total_password_protected_links: int
+    total_unique_users: int
+    total_monthly_users: int
+
 
 class LinkRequest(ShortenerResponse):
     password: Optional[SecretStr] = None
