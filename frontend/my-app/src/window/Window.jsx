@@ -47,7 +47,6 @@ function Window({ children, headerLinks }) {
       const horizontalChange = event.clientX - preDrag.current.mouseX;
       const verticalChange = event.clientY - preDrag.current.mouseY;
 
-      console.log(verticalChange);
 
       setPosition({
         x: preDrag.current.x + horizontalChange,
@@ -55,10 +54,102 @@ function Window({ children, headerLinks }) {
         width: preDrag.current.width - horizontalChange,
         height: preDrag.current.height - verticalChange,
       });
-      console.log(position);
     }
 
-    const arrayHandleMove = [handleMouseMoveWhole, handleMouseMoveCornerUpperLeft]
+    function handleMouseMoveUpperBorder(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+      setPosition({
+        x: preDrag.current.x,
+        y: preDrag.current.y + verticalChange,
+        width: preDrag.current.width,
+        height: preDrag.current.height - verticalChange,
+      });
+    }
+
+    function handleMouseMoveCornerUpperRight(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+
+      setPosition({
+        x: preDrag.current.x,
+        y: preDrag.current.y + verticalChange,
+        width: preDrag.current.width + horizontalChange,
+        height: preDrag.current.height - verticalChange,
+      });
+    }
+
+    function handleMouseMoveLeftBorder(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+      setPosition({
+        x: preDrag.current.x + horizontalChange,
+        y: preDrag.current.y,
+        width: preDrag.current.width - horizontalChange,
+        height: preDrag.current.height,
+      });
+    }
+
+
+    function handleMouseMoveRightBorder(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+      setPosition({
+        x: preDrag.current.x,
+        y: preDrag.current.y,
+        width: preDrag.current.width + horizontalChange,
+        height: preDrag.current.height,
+      });
+    }
+
+    function handleMouseMoveCornerLowerLeft(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+
+      setPosition({
+        x: preDrag.current.x + horizontalChange,
+        y: preDrag.current.y,
+        width: preDrag.current.width - horizontalChange,
+        height: preDrag.current.height + verticalChange,
+      });
+    }
+
+    function handleMouseMoveLowerBorder(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+      setPosition({
+        x: preDrag.current.x,
+        y: preDrag.current.y,
+        width: preDrag.current.width,
+        height: preDrag.current.height + verticalChange,
+      });
+    }
+
+    function handleMouseMoveCornerLowerRight(event) {
+      const horizontalChange = event.clientX - preDrag.current.mouseX;
+      const verticalChange = event.clientY - preDrag.current.mouseY;
+
+
+      setPosition({
+        x: preDrag.current.x,
+        y: preDrag.current.y,
+        width: preDrag.current.width + horizontalChange,
+        height: preDrag.current.height + verticalChange,
+      });
+    }
+
+    const arrayHandleMove = [
+      handleMouseMoveWhole, 
+      handleMouseMoveCornerUpperLeft, handleMouseMoveUpperBorder, handleMouseMoveCornerUpperRight,
+      handleMouseMoveLeftBorder, handleMouseMoveRightBorder,
+      handleMouseMoveCornerLowerLeft, handleMouseMoveLowerBorder, handleMouseMoveCornerLowerRight,
+    ]
 
     function handleMouseUp() {
       setDragging(-1);

@@ -64,8 +64,8 @@ function ScreenGrid() {
         });
       }
   
-      function handleMouseUp() {
-        const pos = getPosition(position.x, position.y);
+      function handleMouseUp(event) {
+        const pos = getPosition(event.clientX, event.clientY);
 
         setProgramsIcons(prev => prev.map((icon, index) =>
            index === dragging ? {...icon, position: {x: pos[0], y:pos[1]} } : icon)
