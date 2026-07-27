@@ -1,6 +1,6 @@
 
 import './ProgramLink.css';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import Stats from './Stats';
 import Mainpage from './Mainpage';
@@ -9,7 +9,6 @@ import Window from '../window/Window';
 
 function ProgramLink() {
     const [currentPage, setCurrentPage] = useState('mainpage');
-
 
     const handleHomeClick = () => {
         setCurrentPage('mainpage');

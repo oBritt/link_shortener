@@ -26,12 +26,27 @@
     width: fit-content;
     align-items: center;
     justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.icon-container-moving {
+    display: flex;  
+    flex-direction: column;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    background-color: blue;
+    opacity: 0.1;
 }
 
 
 .icon-image {
     height: 30px;
     width: 30px;
+    -webkit-user-drag: none;
+    user-drag: none; /* not standard, but harmless to include */
+    pointer-events: none; /* let mousedown bubble to the container, not the img */
 }
 
 .icon-name {
@@ -39,4 +54,5 @@
     text-align: center;
     font-size: 10px;
     color: white;
+    pointer-events: none;
 }
