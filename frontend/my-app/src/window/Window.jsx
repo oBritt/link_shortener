@@ -8,6 +8,9 @@ function Window({ children, headerLinks }) {
   const [position, setPosition] = useState({ x: 0, y: 0, width: 600, height: 400 });
   const preDrag = useRef({ x: 0, y: 0, width: 0, height: 0, mouseX: 0, mouseY: 0 });
   const windowRef = useRef(null);
+  const minWidth = 350;
+  const minHeight = 250;
+
 
   useEffect(() => {
     const rect = windowRef.current.getBoundingClientRect();
@@ -42,143 +45,65 @@ function Window({ children, headerLinks }) {
       });
     }
 
-    
-    function handleMouseMoveCornerUpperLeft(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
+    function handleTransform(event) {
+      if (dragging == -1) return;
 
+      if (dragging == 0) {
+        handleMouseMoveWhole(event);
+        return;
+      }
+      const factors = [
+                        [1, 1, -1, -1], [0, 1, 0, -1], [0, 1, 1, -1],
+                        [1, 0, -1, 0], [0, 0, 1, 0],
+                        [1, 0, -1, 1], [0, 0, 0, 1], [0, 0, 1, 1],
+                      ]
 
-      setPosition({
-        x: preDrag.current.x + horizontalChange,
-        y: preDrag.current.y + verticalChange,
-        width: preDrag.current.width - horizontalChange,
-        height: preDrag.current.height - verticalChange,
-      });
-    }
-
-    function handleMouseMoveUpperBorder(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
-      setPosition({
-        x: preDrag.current.x,
-        y: preDrag.current.y + verticalChange,
-        width: preDrag.current.width,
-        height: preDrag.current.height - verticalChange,
-      });
-    }
-
-    function handleMouseMoveCornerUpperRight(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
+      const factor = factors[dragging - 1];
+      let horizontalChange = event.clientX - preDrag.current.mouseX;
+      let verticalChange = event.clientY - preDrag.current.mouseY;
+      
+      if (preDrag.current.width - horizontalChange < minWidth) {
+        horizontalChange = preDrag.current.width - minWidth;
+      }
+      if (preDrag.current.height - verticalChange < minHeight) {
+        verticalChange = preDrag.current.height - minHeight;
+      }
 
       setPosition({
-        x: preDrag.current.x,
-        y: preDrag.current.y + verticalChange,
-        width: preDrag.current.width + horizontalChange,
-        height: preDrag.current.height - verticalChange,
+        x: preDrag.current.x + factor[0] * horizontalChange,
+        y: preDrag.current.y + factor[1] * verticalChange,
+        width: preDrag.current.width + factor[2] * horizontalChange,
+        height: preDrag.current.height + factor[3] * verticalChange,
       });
+
     }
-
-    function handleMouseMoveLeftBorder(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
-      setPosition({
-        x: preDrag.current.x + horizontalChange,
-        y: preDrag.current.y,
-        width: preDrag.current.width - horizontalChange,
-        height: preDrag.current.height,
-      });
-    }
-
-
-    function handleMouseMoveRightBorder(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
-      setPosition({
-        x: preDrag.current.x,
-        y: preDrag.current.y,
-        width: preDrag.current.width + horizontalChange,
-        height: preDrag.current.height,
-      });
-    }
-
-    function handleMouseMoveCornerLowerLeft(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
-
-      setPosition({
-        x: preDrag.current.x + horizontalChange,
-        y: preDrag.current.y,
-        width: preDrag.current.width - horizontalChange,
-        height: preDrag.current.height + verticalChange,
-      });
-    }
-
-    function handleMouseMoveLowerBorder(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
-      setPosition({
-        x: preDrag.current.x,
-        y: preDrag.current.y,
-        width: preDrag.current.width,
-        height: preDrag.current.height + verticalChange,
-      });
-    }
-
-    function handleMouseMoveCornerLowerRight(event) {
-      const horizontalChange = event.clientX - preDrag.current.mouseX;
-      const verticalChange = event.clientY - preDrag.current.mouseY;
-
-
-      setPosition({
-        x: preDrag.current.x,
-        y: preDrag.current.y,
-        width: preDrag.current.width + horizontalChange,
-        height: preDrag.current.height + verticalChange,
-      });
-    }
-
-    const arrayHandleMove = [
-      handleMouseMoveWhole, 
-      handleMouseMoveCornerUpperLeft, handleMouseMoveUpperBorder, handleMouseMoveCornerUpperRight,
-      handleMouseMoveLeftBorder, handleMouseMoveRightBorder,
-      handleMouseMoveCornerLowerLeft, handleMouseMoveLowerBorder, handleMouseMoveCornerLowerRight,
-    ]
 
     function handleMouseUp() {
       setDragging(-1);
     }
 
-    document.addEventListener('mousemove', arrayHandleMove[dragging]);
+    document.addEventListener('mousemove', handleTransform);
     document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      document.removeEventListener('mousemove', arrayHandleMove[dragging]);
+      document.removeEventListener('mousemove', handleTransform);
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [dragging, position]);
-
-
-
-  function WindowInformation(){
-    return (
-      <>
-
-      </>
-    );
-  }
 
   return (
     
     <div className="window-wrapper"
         ref={windowRef}
-        style={{ position: 'absolute', left: position.x, top: position.y, width:position.width, height:position.height }}
+        style={{ 
+          position: 'absolute', 
+          left: position.x, 
+          top: position.y, 
+          width: position.width, 
+          height: position.height,
+          minWidth: minWidth,
+          minHeight: minHeight,
+        }}
     >
       <div className="window-wrapper-upper">
         <div className="window-corner-upper-left" onMouseDown={(event) => (handleMouseDown(event, 1))}>
