@@ -37,9 +37,12 @@ function Window({ children, headerLinks }) {
     if (dragging === -1) return;
 
     function handleMouseMoveWhole(event) {
+      let mouseX = Math.min(Math.max(5, event.clientX), window.innerWidth - 5);
+      let mouseY = Math.min(Math.max(5, event.clientY), window.innerHeight - 40);
+
       setPosition({
-        x: event.clientX + preDrag.current.x - preDrag.current.mouseX,
-        y: event.clientY + preDrag.current.y - preDrag.current.mouseY,
+        x: mouseX + preDrag.current.x - preDrag.current.mouseX,
+        y: mouseY + preDrag.current.y - preDrag.current.mouseY,
         height: preDrag.current.height,
         width: preDrag.current.width
       });
@@ -59,8 +62,12 @@ function Window({ children, headerLinks }) {
                       ]
 
       const factor = factors[dragging - 1];
-      let horizontalChange = event.clientX - preDrag.current.mouseX;
-      let verticalChange = event.clientY - preDrag.current.mouseY;
+
+      let mouseX = Math.min(Math.max(5, event.clientX), window.innerWidth - 5);
+      let mouseY = Math.min(Math.max(5, event.clientY), window.innerHeight - 40);
+
+      let horizontalChange = mouseX - preDrag.current.mouseX;
+      let verticalChange = mouseY - preDrag.current.mouseY;
       
       if (preDrag.current.width - horizontalChange < minWidth) {
         horizontalChange = preDrag.current.width - minWidth;
