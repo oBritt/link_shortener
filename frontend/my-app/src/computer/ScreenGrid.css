@@ -9,11 +9,10 @@
 .screen-grid-row {
   display: flex;
   width: 100%;
+  justify-content: center;
 }
 
 .screen-grid-cell {
-  flex: 1;
-  height: 100%;
   border: 1px solid black;
   align-items: center;
   justify-content: center;

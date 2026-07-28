@@ -1,10 +1,12 @@
 
 .stats {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  padding: 0 16px;
   margin: 50px auto;
-  padding: 12px;
-
   text-align: center;
+
 }
 
 .stats-table,
@@ -37,7 +39,7 @@
 }
 
 .url-input{
-  width: 300px;
+  width: 70%;
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;

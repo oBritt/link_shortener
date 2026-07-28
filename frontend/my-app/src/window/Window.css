@@ -1,10 +1,17 @@
 .window {
   flex: 1;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
   background: #c0c0c0;
 }
 
 .window-content {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
   padding: 16px;
   overflow: auto;
 }
@@ -71,6 +78,8 @@
   display: flex;
   height: 100%;
   flex: 1;
+  min-height: 0;
+  min-width: 0;
 }
 
 .window-left-border {

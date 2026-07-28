@@ -16,6 +16,7 @@ function ScreenGrid() {
 
     const [programsIcons, setProgramsIcons] = useState([
       {position: {x: 0, y: 0}, icon: IconLink, name: "Link Shortener", },
+      {position: {x: 0, y: 1}, icon: IconLink, name: "Link Shortener1", },
     ]);
 
     const [dragging, setDragging] = useState(-1);
@@ -36,7 +37,27 @@ function ScreenGrid() {
       const moveHorizontal = Math.floor((width - cols * gridSize) / 2);
       const xCord = Math.floor((x - moveHorizontal) / gridSize);
       const yCord = Math.floor((y - moveVertical) / gridSize);
-      return [xCord, yCord];
+      return [Math.min(Math.max(xCord, 0), cols - 1), Math.min(Math.max(yCord, 0), rows - 1)];
+    }
+
+    function getFreePosition(x, y) {
+      let newX = x;
+      let newY = y;
+      while (true) {
+        const icon = programsIcons.filter(p => p.position.x === newX && newY === p.position.y);
+        if (icon.length == 0) {
+          break;
+        }
+        if (programsIcons.indexOf(icon[0]) === dragging) {
+          break;
+        }
+        newY = newY + 1;
+        if (newY === rows) {
+          newX = (newX + 1) % cols
+          newY = 0;
+        }
+      }
+      return [newX, newY];
     }
 
     function handleMouseDown(event, id) {
@@ -66,9 +87,9 @@ function ScreenGrid() {
   
       function handleMouseUp(event) {
         const pos = getPosition(event.clientX, event.clientY);
-
+        const posFree = getFreePosition(pos[0], pos[1]);
         setProgramsIcons(prev => prev.map((icon, index) =>
-           index === dragging ? {...icon, position: {x: pos[0], y:pos[1]} } : icon)
+           index === dragging ? {...icon, position: {x: posFree[0], y:posFree[1]} } : icon)
         )
 
         setDragging(-1);
@@ -86,7 +107,9 @@ function ScreenGrid() {
 
 
     return (
+      
       <div className="screen-grid">
+        <div style={{position:'absolute', width: '5px', height: '5px', backgroundColor: 'blue', top: '0px', left:'37px'}}></div>
         <div className="padding-row" style={{ height: (height - rows * gridSize) / 2 }}></div>
         {
           Array.from({ length: rows }, (_, i) => (
@@ -94,7 +117,7 @@ function ScreenGrid() {
               {
                 Array.from({ length: cols }, (_, j) => (
             
-                  <div className="screen-grid-cell" key={j}>
+                  <div className="screen-grid-cell" style={{width: gridSize - 2, height: gridSize - 2}} key={j}>
                     {
                       programsIcons
                         .filter(program => program.position.x === j && program.position.y === i)
