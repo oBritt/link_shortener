@@ -14,6 +14,10 @@ function BrowserApp({ onClose }) {
     const [totalLinksWithPassword, setTotalLinksWithPassword] = useState(0);
 
     async function handleStats() {
+        if (url.includes(frontendUrl)) {
+            redirect();
+            return;
+        }
         try {
             const params = new URLSearchParams();
             params.append("secret", url);
