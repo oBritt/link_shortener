@@ -2,7 +2,7 @@ import Header from "./Header";
 import "./Window.css";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
 
-function Window({ children, headerLinks }) {
+function Window({ children, headerLinks, onClose }) {
 
   const [dragging, setDragging] = useState(-1);
   const [position, setPosition] = useState({ x: 0, y: 0, width: 600, height: 400 });
@@ -16,7 +16,7 @@ function Window({ children, headerLinks }) {
     const rect = windowRef.current.getBoundingClientRect();
     const centeredX = (window.innerWidth - rect.width) / 2;
     const centeredY = (window.innerHeight - rect.height) / 2;
-    setPosition({ x: centeredX, y: centeredY, width: rect.width, height: rect.height });
+    setPosition({ x: centeredX + (Math.random() * 40 - 20), y: centeredY + (Math.random() * 40 - 20), width: rect.width, height: rect.height });
   }, []);
 
   function handleMouseDown(event, val) {
@@ -98,6 +98,7 @@ function Window({ children, headerLinks }) {
     };
   }, [dragging, position]);
 
+
   return (
     
     <div className="window-wrapper"
@@ -135,7 +136,7 @@ function Window({ children, headerLinks }) {
           <div className="window-left-border-visiable"></div>
         </div>
         <div className="window">
-        <Header headerLinks={headerLinks} onMouseDown={(event) => handleMouseDown(event, 0)} />
+        <Header headerLinks={headerLinks} onMouseDown={(event) => handleMouseDown(event, 0)} onClose={onClose}/>
           <div className="window-content">
             {children}
           </div>

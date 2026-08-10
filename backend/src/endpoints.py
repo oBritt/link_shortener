@@ -70,6 +70,7 @@ async def get_stats(request: Request, stats_request: StatsRequest = Depends()) -
         )
 
 @router.get("/appstats")
+@limiter.limit("10/minute")
 async def get_app_stats(request: AppStatsRequest = Depends()) -> AppStatsResponse:
     try:
         stats = await Repository.get_app_stats(request.secret)
