@@ -49,16 +49,11 @@
 }
 
 .redirect-page {
-  grid-column: 2;
-  position: relative;
-  display: block;
-  justify-self: center;
   width: 100%;
-  max-width: 480px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04);
-  padding: 40px 32px;
+  max-width: 500px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  margin: 100px auto;
   text-align: center;
 }
 

@@ -23,9 +23,9 @@ function Header({ headerLinks = [], onMouseDown, onClose, title}) {
         <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={onClose}>
           _
         </button>
-        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={() => window.open('', '_blank')}>
+        {/* <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={() => window.open('', '_blank')}>
           □
-        </button>
+        </button> */}
         <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={onClose}>
           ✕
         </button>

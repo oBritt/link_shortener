@@ -3,6 +3,9 @@
 import './Redirectpage.css';
 import { useState, useEffect, useRef } from "react";
 import PasswordModal from './PasswordModal';
+import Footer from '../computer/Footer';
+import ScreenGrid from '../computer/ScreenGrid';
+import Window from '../window/Window';
 
 import add1 from "../assets/add_1.png";
 import add2 from "../assets/add_2.png";
@@ -120,9 +123,9 @@ function Redirectpage() {
       {showModal && (
         <PasswordModal onSubmit={handlePasswordSubmit} error={errorText} link={linkData} />
       )}
-      <div className="redirect-layout">
-        <AdRail images={AD_IMAGES_LEFT} label="Left" />
-        <main className="redirect-page">
+      
+       <Window>
+        <div className="redirect-page">
           <h1>Redirecting you</h1>
           <p className="subtext">Hang tight, your link is on its way.</p>
           <p className="countdown">
@@ -144,9 +147,9 @@ function Redirectpage() {
               to continue.
             </p>
           )}
-        </main>
-        <AdRail images={AD_IMAGES_RIGHT} label="Right" />
-      </div>
+        </div>
+       </Window>
+      <Footer />
     </>
   );
 }

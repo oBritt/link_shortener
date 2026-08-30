@@ -15,7 +15,7 @@ function BrowserApp({ onClose }) {
 
     async function handleStats() {
         if (url.includes(frontendUrl)) {
-            redirect();
+            backendRedirect();
             return;
         }
         try {
@@ -35,41 +35,37 @@ function BrowserApp({ onClose }) {
                 setTotalMonthlyUsers(data.total_monthly_users);
                 setTotalLinksWithPassword(data.total_password_protected_links);
             } else {
-                redirect();
+                directRedirect();
             }
-
            
         } catch (error) {
             console.error(error);
         }
     }
-    
-    async function redirect() {
-        if (url.includes(frontendUrl)) {
-            const ending = url.split("/").pop();
-            console.log("Redirecting to backend for ending: ", ending);
-            try {
-                const params = new URLSearchParams();
-                params.append("ending", ending);
+
+    async function backendRedirect() {
+        const ending = url.split("/").pop();
+        console.log("Redirecting to backend for ending: ", ending);
+        try {
+            const params = new URLSearchParams();
+            params.append("ending", ending);
 
 
-                const res = await fetch(`${backendUrl}/get_link?${params}`, {
-                    method: "GET",
-                });
+            const res = await fetch(`${backendUrl}/get_link?${params}`, {
+                method: "GET",
+            });
 
-                if (!res.ok) {
-                    throw new Error("Failed to fetch link, here only password unprotected links are allowed");
-                }
-
-                const data = await res.json();
-                window.location.href = data.url;
-            } catch (error) {
-                console.error(error);
+            if (!res.ok) {
+                throw new Error("Failed to fetch link, here only password unprotected links are allowed");
             }
-        } else {
-            directRedirect();
-        }   
+
+            const data = await res.json();
+            window.location.href = data.url;
+        } catch (error) {
+            console.error(error);
+        }
     }
+    
 
     async function directRedirect() {
         const input = url.trim();

@@ -71,9 +71,9 @@ async def get_stats(request: Request, stats_request: StatsRequest = Depends()) -
 
 @router.get("/appstats")
 @limiter.limit("10/minute")
-async def get_app_stats(request: AppStatsRequest = Depends()) -> AppStatsResponse:
+async def get_app_stats(request: Request, stats_request: AppStatsRequest = Depends()) -> AppStatsResponse:
     try:
-        stats = await Repository.get_app_stats(request.secret)
+        stats = await Repository.get_app_stats(stats_request.secret)
         print(stats)
         return AppStatsResponse(total_links=stats["total_links"], 
                                 total_clicks=stats["total_clicks"], 

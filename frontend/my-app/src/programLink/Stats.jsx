@@ -1,13 +1,14 @@
 import './Stats.css';
 import { useState } from "react";
 
-function Stats() {
+function Stats(error) {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [ip, setIp] = useState();
   const [clicks, setClicks] = useState(0);
   const [shortUrl, setShortUrl] = useState("");
   const [link_created_at, setLinkCreatedAt] = useState("");
   const [clicked_at, setClickedAt] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   async function handleStats() {
     const ending = shortUrl.split("/").pop();
@@ -20,17 +21,19 @@ function Stats() {
         method: "GET",
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-      throw new Error("Failed to fetch stats");
+        setErrorText(data.detail || "Failed to fetch stats. Please check the URL and try again.");
+        return;
       }
 
-      const data = await res.json();
       setClicks(data.clicks);
       setIp(data.ip || []);
       setLinkCreatedAt(new Date(data.link_created_at + "Z").toLocaleString());
       setClickedAt(data.clicked_at || []);
     } catch (error) {
-      setClicks("Something went wrong.");
+      setErrorText("Failed to fetch stats. Please check the URL and try again.");
       console.error(error);
     }
   }
@@ -43,6 +46,11 @@ function Stats() {
       <button className="submit-button" onClick={() => handleStats()}>
       Get Stats
       </button>
+
+      {errorText ? (<p className="error-text">{errorText}</p>) : (
+        <p></p>
+      )}
+
       {ip ? (
         <div className="stats-container">
             <table className="stats-table">
