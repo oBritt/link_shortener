@@ -24,6 +24,13 @@ function Redirectpage() {
   const [linkData, setLinkData] = useState("");
   const [firstPasswordRequired, setFirstPasswordRequired] = useState(true);
 
+  const sideMargin = 16;
+  const adWidth = 190;
+  const taskbarSpace = 50;
+  const adHeight = Math.min(620, window.innerHeight - taskbarSpace - sideMargin * 2);
+  const adY = Math.max(sideMargin, (window.innerHeight - taskbarSpace - adHeight) / 2);
+  const rightX = window.innerWidth - adWidth - sideMargin - adWidth; // 16px from right edge, minus ad width, minus side margin, minus ad width for spacing
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -123,6 +130,10 @@ function Redirectpage() {
       {showModal && (
         <PasswordModal onSubmit={handlePasswordSubmit} error={errorText} link={linkData} />
       )}
+
+      <Window initialX={sideMargin} initialY={adY} width={adWidth} height={adHeight}>
+        <AdRail images={AD_IMAGES_LEFT} label="Left" />
+      </Window>
       
        <Window>
         <div className="redirect-page">
@@ -149,6 +160,10 @@ function Redirectpage() {
           )}
         </div>
        </Window>
+
+       <Window initialX={rightX} initialY={adY} width={adWidth} height={adHeight}>
+        <AdRail images={AD_IMAGES_RIGHT} label="Right" />
+      </Window>
       <Footer />
     </>
   );

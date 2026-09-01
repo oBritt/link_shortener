@@ -14,6 +14,7 @@
   width: 100%;
   max-width: 220px;
   justify-self: center;
+  box-sizing: border-box;
   position: sticky;
   top: 40px;
   max-height: calc(100vh - 80px); /* keeps rail within the viewport */
@@ -21,17 +22,16 @@
 }
 
 .ad-unit {
-  position: relative;
-  border-radius: 10px;
+  flex: 1;            /* each ad takes an equal share of the height */
+  min-height: 0;      /* allows shrinking below content size */
   overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
 .ad-unit img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;  /* fills the tall box, crops edges slightly */
 }
 
 .ad-tag {
