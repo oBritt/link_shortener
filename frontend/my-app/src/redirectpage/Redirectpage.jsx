@@ -3,6 +3,9 @@
 import './Redirectpage.css';
 import { useState, useEffect, useRef } from "react";
 import PasswordModal from './PasswordModal';
+import Footer from '../computer/Footer';
+import ScreenGrid from '../computer/ScreenGrid';
+import Window from '../window/Window';
 
 import add1 from "../assets/add_1.png";
 import add2 from "../assets/add_2.png";
@@ -20,6 +23,13 @@ function Redirectpage() {
   const [seconds, setSeconds] = useState(5);
   const [linkData, setLinkData] = useState("");
   const [firstPasswordRequired, setFirstPasswordRequired] = useState(true);
+
+  const sideMargin = 16;
+  const adWidth = 190;
+  const taskbarSpace = 50;
+  const adHeight = Math.min(620, window.innerHeight - taskbarSpace - sideMargin * 2);
+  const adY = Math.max(sideMargin, (window.innerHeight - taskbarSpace - adHeight) / 2);
+  const rightX = window.innerWidth - adWidth - sideMargin - adWidth; // 16px from right edge, minus ad width, minus side margin, minus ad width for spacing
 
 
   useEffect(() => {
@@ -120,9 +130,13 @@ function Redirectpage() {
       {showModal && (
         <PasswordModal onSubmit={handlePasswordSubmit} error={errorText} link={linkData} />
       )}
-      <div className="redirect-layout">
+
+      <Window initialX={sideMargin} initialY={adY} width={adWidth} height={adHeight}>
         <AdRail images={AD_IMAGES_LEFT} label="Left" />
-        <main className="redirect-page">
+      </Window>
+      
+       <Window>
+        <div className="redirect-page">
           <h1>Redirecting you</h1>
           <p className="subtext">Hang tight, your link is on its way.</p>
           <p className="countdown">
@@ -144,9 +158,13 @@ function Redirectpage() {
               to continue.
             </p>
           )}
-        </main>
+        </div>
+       </Window>
+
+       <Window initialX={rightX} initialY={adY} width={adWidth} height={adHeight}>
         <AdRail images={AD_IMAGES_RIGHT} label="Right" />
-      </div>
+      </Window>
+      <Footer />
     </>
   );
 }
