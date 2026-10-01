@@ -3,8 +3,9 @@ import './ScreenGrid.css';
 import Icon from './Icon';
 import { useState, useRef, useEffect } from 'react';
 import IconLink from '../assets/icon_link.png'
+import BrowserImg from '../assets/explorer.png'
 
-function ScreenGrid() {
+function ScreenGrid({onOpenWindow}) {
 
     const gridSize = 80; // Size of each grid cell in pixels
 
@@ -15,14 +16,15 @@ function ScreenGrid() {
     const cols = Math.floor(width / gridSize);
 
     const [programsIcons, setProgramsIcons] = useState([
-      {position: {x: 0, y: 0}, icon: IconLink, name: "Link Shortener", },
-      {position: {x: 0, y: 1}, icon: IconLink, name: "Link Shortener1", },
+      { position: {x: 0, y: 0}, icon: IconLink, name: "Link Shortener", programId: "ProgramLink" },
+      { position: {x: 0, y: 1}, icon: BrowserImg, name: "Explorer", programId: "BrowserApp" },
     ]);
 
     const [dragging, setDragging] = useState(-1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const preDrag = useRef({x: 0, y: 0, mouseX: 0, mouseY:0});
     const iconRefs = useRef(new Map());
+    const wasDragged = useRef(false);
 
     function getRef(key) {
       if (!iconRefs.current.has(key)) {
@@ -61,6 +63,7 @@ function ScreenGrid() {
     }
 
     function handleMouseDown(event, id) {
+      wasDragged.current = false;
       setDragging(id);
       const refContainer = getRef(programsIcons[id].name);
       const rect = refContainer.current.getBoundingClientRect();
@@ -79,6 +82,7 @@ function ScreenGrid() {
       if (dragging === -1) return;
   
       function handleMouseMove(event) {
+        wasDragged.current = true;
         setPosition({
           x: event.clientX + preDrag.current.x - preDrag.current.mouseX,
           y: event.clientY + preDrag.current.y - preDrag.current.mouseY,
@@ -109,7 +113,7 @@ function ScreenGrid() {
     return (
       
       <div className="screen-grid">
-        <div style={{position:'absolute', width: '5px', height: '5px', backgroundColor: 'blue', top: '0px', left:'37px'}}></div>
+        {/*<div style={{position:'absolute', width: '5px', height: '5px', backgroundColor: 'blue', top: '0px', left:'37px'}}></div>*/}
         <div className="padding-row" style={{ height: (height - rows * gridSize) / 2 }}></div>
         {
           Array.from({ length: rows }, (_, i) => (
@@ -129,8 +133,13 @@ function ScreenGrid() {
                               ref={getRef(p.name)}
                               onMouseDown={(event) => handleMouseDown(event, id)}
                               key={p.name}
+                              onDoubleClick={() => {
+                                if (!wasDragged.current) {
+                                  onOpenWindow(p.programId, p.name);
+                                }
+                              }}
                             >
-                              <img className="icon-image" src={p.icon} />
+                              <img className="icon-image" src={p.icon} draggable={false} />
                               <div className="icon-name">{p.name}</div>
                             </div>
                           );
@@ -152,6 +161,7 @@ function ScreenGrid() {
               position: 'absolute',
               top: position.y,
               left: position.x,
+              pointerEvents: 'none',
             }}
           >
             <img className="icon-image" src={programsIcons[dragging].icon} />

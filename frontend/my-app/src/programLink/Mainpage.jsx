@@ -93,7 +93,7 @@
         )}
         <div id="error-text">{errorText}</div>
         <button className="submit-button" onClick={handleSubmit}>
-        Submit
+        Shorten
         </button>
 
         {response && errorText == "" ? (

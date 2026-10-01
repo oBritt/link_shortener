@@ -3,7 +3,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background: red;
+  /*background: red;*/
 }
 
 .screen-grid-row {
@@ -13,7 +13,7 @@
 }
 
 .screen-grid-cell {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   align-items: center;
   justify-content: center;
   display: flex;

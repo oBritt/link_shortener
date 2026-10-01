@@ -2,7 +2,7 @@ import './Header.css';
 import { Link } from "react-router-dom";
 
 
-function Header({ headerLinks, onMouseDown }) {
+function Header({ headerLinks = [], onMouseDown, onClose, title}) {
 
   return (
     <header className="header" onMouseDown={onMouseDown}>
@@ -16,17 +16,17 @@ function Header({ headerLinks, onMouseDown }) {
       </div>
 
       <div className="drag-area" >
-        <span className="title">URL Shortener</span>
+        <span className="title">{title}</span>
       </div>
 
       <div className="window-buttons">
-        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()}>
+        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={onClose}>
           _
         </button>
-        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()}>
+        {/* <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={() => window.open('', '_blank')}>
           □
-        </button>
-        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()}>
+        </button> */}
+        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={onClose}>
           ✕
         </button>
       </div>
