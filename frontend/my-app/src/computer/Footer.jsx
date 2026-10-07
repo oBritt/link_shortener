@@ -4,7 +4,7 @@ import './Footer.css';
 import { useState, useEffect, useRef } from 'react';
 import osIcon from '../assets/os.png';
 
-function Footer({programs, onOpen, onClose}) {
+function Footer({programs = [], onOpen, onClose}) {
   const [time, setTime] = useState(new Date());
   const [menuOpen, setMenuOpen] = useState(false);
   const menuAreaRef = useRef(null);     
