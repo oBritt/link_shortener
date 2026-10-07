@@ -13,7 +13,7 @@ import BrowserImg from '../assets/explorer.png'
 
 const REGISTRY = [ ProgramLink, BrowserApp ]
 
-function Computer() {
+function Computer({preset}) {
     
     function handleClick(event) {
       
@@ -31,18 +31,7 @@ function Computer() {
 
     }
 
-    const [programs, setPrograms] = useState([
-        {
-            id: 0, position: {x: 0, y: 0}, positionAbs: {x: null, y: null, width: null, height: null},
-            icon: IconLink, name: "Link Shortener",
-            programId: "ProgramLink", isOpened: true, isMinimized: false, order: 1,
-        },
-        {   
-            id: 1, position: {x: 0, y: 1}, positionAbs: {x: null, y: null, width: null, height: null},
-            icon: BrowserImg, name: "Explorer", 
-            programId: "BrowserApp", isOpened: false, isMinimized: false, order: 1000,
-        },
-    ]);
+    const [programs, setPrograms] = useState(preset);
 
     const setAbsPosition = (id, pos) => {
       setPrograms(prev => prev.map(p => {
@@ -123,6 +112,7 @@ function Computer() {
                 onMouseDown={() => clickWindow(p.id)}
               >
                 <Component
+                  program={p}
                   zIndex={p.order * 100}
                   onClose={() => closeWindow(p.id)}
                   onMinimize={() => minimizeWindow(p.id)}

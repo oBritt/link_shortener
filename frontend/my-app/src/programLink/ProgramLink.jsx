@@ -7,7 +7,7 @@ import Mainpage from './Mainpage';
 import Window from '../window/Window';
 
 
-function ProgramLink({ zIndex, onClose, onMinimize, updatePos, pos }) {
+function ProgramLink({program, zIndex, onClose, onMinimize, updatePos, pos }) {
     const [currentPage, setCurrentPage] = useState('mainpage');
 
     const handleHomeClick = () => {
