@@ -2,11 +2,11 @@
 import './ScreenGrid.css';
 import Icon from './Icon';
 import { useState, useRef, useEffect } from 'react';
-import IconLink from '../assets/icon_link.png'
-import BrowserImg from '../assets/explorer.png'
 
-function ScreenGrid({onOpenWindow}) {
 
+function ScreenGrid({programsState, onOpenWindow}) {
+
+    const [programs, setPrograms] = programsState;
     const gridSize = 80; // Size of each grid cell in pixels
 
     const width = window.innerWidth;
@@ -15,10 +15,7 @@ function ScreenGrid({onOpenWindow}) {
     const rows = Math.floor(height / gridSize);
     const cols = Math.floor(width / gridSize);
 
-    const [programsIcons, setProgramsIcons] = useState([
-      { position: {x: 0, y: 0}, icon: IconLink, name: "Link Shortener", programId: "ProgramLink" },
-      { position: {x: 0, y: 1}, icon: BrowserImg, name: "Explorer", programId: "BrowserApp" },
-    ]);
+
 
     const [dragging, setDragging] = useState(-1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -46,11 +43,11 @@ function ScreenGrid({onOpenWindow}) {
       let newX = x;
       let newY = y;
       while (true) {
-        const icon = programsIcons.filter(p => p.position.x === newX && newY === p.position.y);
+        const icon = programs.filter(p => p.position.x === newX && newY === p.position.y);
         if (icon.length == 0) {
           break;
         }
-        if (programsIcons.indexOf(icon[0]) === dragging) {
+        if (programs.indexOf(icon[0]) === dragging) {
           break;
         }
         newY = newY + 1;
@@ -65,7 +62,7 @@ function ScreenGrid({onOpenWindow}) {
     function handleMouseDown(event, id) {
       wasDragged.current = false;
       setDragging(id);
-      const refContainer = getRef(programsIcons[id].name);
+      const refContainer = getRef(programs[id].name);
       const rect = refContainer.current.getBoundingClientRect();
 
       preDrag.current = {
@@ -90,12 +87,13 @@ function ScreenGrid({onOpenWindow}) {
       }
   
       function handleMouseUp(event) {
-        const pos = getPosition(event.clientX, event.clientY);
-        const posFree = getFreePosition(pos[0], pos[1]);
-        setProgramsIcons(prev => prev.map((icon, index) =>
-           index === dragging ? {...icon, position: {x: posFree[0], y:posFree[1]} } : icon)
-        )
-
+        if (wasDragged.current) {
+          const pos = getPosition(event.clientX, event.clientY);
+          const posFree = getFreePosition(pos[0], pos[1]);
+          setPrograms(prev => prev.map(prog =>
+            prog.id === dragging ? { ...prog, position: { x: posFree[0], y: posFree[1] } } : prog
+          ));
+        }
         setDragging(-1);
       }
   
@@ -106,7 +104,7 @@ function ScreenGrid({onOpenWindow}) {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
       };
-    }, [dragging, position, programsIcons]);
+    }, [dragging, position, programs]);
 
 
 
@@ -123,19 +121,18 @@ function ScreenGrid({onOpenWindow}) {
             
                   <div className="screen-grid-cell" style={{width: gridSize - 2, height: gridSize - 2}} key={j}>
                     {
-                      programsIcons
+                      programs
                         .filter(program => program.position.x === j && program.position.y === i)
                         .map(p => {
-                          const id = programsIcons.findIndex(icon => icon.position.x === j && icon.position.y === i);
                           return (
                             <div
                               className="icon-container"
                               ref={getRef(p.name)}
-                              onMouseDown={(event) => handleMouseDown(event, id)}
+                              onMouseDown={(event) => handleMouseDown(event, p.id)}
                               key={p.name}
                               onDoubleClick={() => {
                                 if (!wasDragged.current) {
-                                  onOpenWindow(p.programId, p.name);
+                                  onOpenWindow(p.id);
                                 }
                               }}
                             >
@@ -156,7 +153,7 @@ function ScreenGrid({onOpenWindow}) {
       dragging !== -1 && (
           <div
             className="icon-container-moving"
-            key={programsIcons[dragging].name}
+            key={programs[dragging].name}
             style={{
               position: 'absolute',
               top: position.y,
@@ -164,8 +161,8 @@ function ScreenGrid({onOpenWindow}) {
               pointerEvents: 'none',
             }}
           >
-            <img className="icon-image" src={programsIcons[dragging].icon} />
-            <div className="icon-name">{programsIcons[dragging].name}</div>
+            <img className="icon-image" src={programs[dragging].icon} />
+            <div className="icon-name">{programs[dragging].name}</div>
           </div>
          )
 

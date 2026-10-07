@@ -3,7 +3,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 35px;
+  height: 40px;
   box-sizing: border-box;
 
   display: flex;
@@ -15,10 +15,12 @@
   padding: 2px 4px;
 
   font-family: Tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 18px;
 
-  z-index: 1000;
+  z-index: 9000;
 }
+
+/* ---------- Start button ---------- */
 
 .start-button {
   display: flex;
@@ -28,7 +30,7 @@
   background: #c0c0c0;
   font-weight: bold;
   font-family: Tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 20px;
 
   padding: 2px 8px;
 
@@ -48,9 +50,79 @@
 }
 
 .start-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
+
+/* ---------- Opened programs (centered on the taskbar) ---------- */
+
+.opened-programs {
+  position: absolute;      /* .taskbar is fixed, so this is relative to it */
+  left: 50%;
+  top: 2px;
+  bottom: 2px;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 4px;
+}
+
+.programIcon-wrapper {
+  width: 36px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 3px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font: inherit;
+  background: #c0c0c0;
+
+  /* default: raised, same as the start button */
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+}
+
+/* minimized: raised, slightly dimmed icon */
+.programIcon-wrapper.minimized .programIcon {
+  opacity: 0.6;
+}
+
+/* visible: sunken, lighter background */
+.programIcon-wrapper.active {
+  background: #e4e4e4;
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+.programIcon-wrapper:hover {
+  background: #d4d4d4;
+}
+
+.programIcon-wrapper.active:hover {
+  background: #f0f0f0;
+}
+
+.programIcon-wrapper:hover .programIcon {
+  opacity: 1;
+}
+
+.programIcon {
+  display: block;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;    /* clicks always hit the button */
+}
+
+/* ---------- Clock ---------- */
 
 .clock {
   background: #c0c0c0;
@@ -65,9 +137,11 @@
   text-align: center;
 }
 
+/* ---------- Drop-up menu ---------- */
+
 .dropup-menu {
   position: absolute;
-  bottom: 100%;         /* opens UP from the taskbar */
+  bottom: 100%;            /* opens UP from the taskbar */
   left: 2px;
   margin-bottom: 2px;
 
@@ -86,5 +160,5 @@
   display: flex;
   flex-direction: column;
 
-  z-index: 2000;        /* must sit above your Window components */
+  z-index: 8000;           /* must sit above your Window components */
 }

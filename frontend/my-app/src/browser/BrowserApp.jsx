@@ -2,7 +2,7 @@ import './BrowserApp.css';
 import { useState } from "react";
 import Window from '../window/Window';
 
-function BrowserApp({ onClose }) {
+function BrowserApp({ zIndex, onClose, onMinimize, updatePos, pos }) {
     const frontendUrl = import.meta.env.VITE_FRONTEND_URL;
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [url, setUrl] = useState('');
@@ -93,7 +93,9 @@ function BrowserApp({ onClose }) {
 
 
     return (
-        <Window onClose={onClose} title="Explorer">
+        <Window zIndex={zIndex} onClose={onClose} onMinimize={onMinimize} title="Explorer"
+            updatePos={updatePos} pos={pos}
+        >
             <div className="browser-app">
                 <h1>Gogol</h1>
                 <input
