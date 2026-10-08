@@ -12,7 +12,6 @@ Built with **FastAPI** (backend) and **React + Vite** (frontend).
 - Per-link statistics
 - Application-wide statistics (protected)
 - Rate limiting on key endpoints
-- QR code generation
 - Responsive frontend with React Router
 
 ## Tech Stack
@@ -24,7 +23,7 @@ Built with **FastAPI** (backend) and **React + Vite** (frontend).
 | Database  | SQLite (`aiosqlite`)                |
 | Auth      | Password hashing with `bcrypt`      |
 | Rate Limit| `slowapi`                           |
-| Other     | Pydantic, Uvicorn, qrcode.react     |
+| Other     | Pydantic, Uvicorn                   |
 
 ## Getting Started
 
@@ -57,8 +56,8 @@ pip install -r requirements.txt
 cd backend
 python -m src.main
 
-The API will be available at: http://localhost:8000API 
-docs (Swagger): http://localhost:8000/docs
+The API will be available at: http://localhost:8000
+API docs (Swagger): http://localhost:8000/docs
 
 
 ### 3. Frontend
