@@ -2,8 +2,7 @@ import Header from "./Header";
 import "./Window.css";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
 
-function Window({ children, headerLinks, onClose, initialX, initialY, width: initialWidth,    
-  height: initialHeight,}) {
+function Window({ children, headerLinks, zIndex, onClose, onMinimize, updatePos, pos}) {
 
   const [dragging, setDragging] = useState(-1);
   const [position, setPosition] = useState({ x: 0, y: 0, width: 600, height: 400 });
@@ -12,18 +11,23 @@ function Window({ children, headerLinks, onClose, initialX, initialY, width: ini
   const minWidth = 350;
   const minHeight = 250;
 
+  function updatePosition(position) {
+    updatePos(position);
+    setPosition(position);
+  }
+
 
   useEffect(() => {
     const rect = windowRef.current.getBoundingClientRect();
 
-    const w = initialWidth ?? rect.width;
-    const h = initialHeight ?? rect.height;
-    const x = initialX ?? (window.innerWidth - w) / 2;
-    const y = initialY ?? (window.innerHeight - h) / 2;
+    const w = pos.width ?? rect.width;
+    const h = pos.height ?? rect.height;
+    const x = pos.x ?? (window.innerWidth - w) / 2;
+    const y = pos.y ?? (window.innerHeight - h) / 2;
 
-    const jitterX = initialX != null ? 0 : Math.random() * 40 - 20;
-    const jitterY = initialY != null ? 0 : Math.random() * 40 - 20;
-    setPosition({ x: x + jitterX, y: y + jitterY, width: w, height: h });
+    const jitterX = pos.x != null ? 0 : Math.random() * 40 - 20;
+    const jitterY = pos.y != null ? 0 : Math.random() * 40 - 20;
+    updatePosition({ x: x + jitterX, y: y + jitterY, width: w, height: h });
   }, []);
 
   function handleMouseDown(event, val) {
@@ -47,7 +51,7 @@ function Window({ children, headerLinks, onClose, initialX, initialY, width: ini
       let mouseX = Math.min(Math.max(5, event.clientX), window.innerWidth - 5);
       let mouseY = Math.min(Math.max(5, event.clientY), window.innerHeight - 40);
 
-      setPosition({
+      updatePosition({
         x: mouseX + preDrag.current.x - preDrag.current.mouseX,
         y: mouseY + preDrag.current.y - preDrag.current.mouseY,
         height: preDrag.current.height,
@@ -83,7 +87,7 @@ function Window({ children, headerLinks, onClose, initialX, initialY, width: ini
         verticalChange = preDrag.current.height - minHeight;
       }
 
-      setPosition({
+      updatePosition({
         x: preDrag.current.x + factor[0] * horizontalChange,
         y: preDrag.current.y + factor[1] * verticalChange,
         width: preDrag.current.width + factor[2] * horizontalChange,
@@ -118,6 +122,7 @@ function Window({ children, headerLinks, onClose, initialX, initialY, width: ini
           height: position.height,
           minWidth: minWidth,
           minHeight: minHeight,
+          zIndex: zIndex
         }}
     >
       <div className="window-wrapper-upper">
@@ -143,7 +148,7 @@ function Window({ children, headerLinks, onClose, initialX, initialY, width: ini
           <div className="window-left-border-visiable"></div>
         </div>
         <div className="window">
-        <Header headerLinks={headerLinks} onMouseDown={(event) => handleMouseDown(event, 0)} onClose={onClose}/>
+        <Header headerLinks={headerLinks} onMouseDown={(event) => handleMouseDown(event, 0)} onClose={onClose} onMinimize={onMinimize}/>
           <div className="window-content">
             {children}
           </div>

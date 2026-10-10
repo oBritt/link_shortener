@@ -7,7 +7,7 @@ import Mainpage from './Mainpage';
 import Window from '../window/Window';
 
 
-function ProgramLink({ onClose }) {
+function ProgramLink({program, zIndex, onClose, onMinimize, updatePos, pos }) {
     const [currentPage, setCurrentPage] = useState('mainpage');
 
     const handleHomeClick = () => {
@@ -22,7 +22,11 @@ function ProgramLink({ onClose }) {
 
     
     return (
-      <Window headerLinks={headerLinks} onClose={onClose} title="URL Shortener">
+      <Window 
+        headerLinks={headerLinks} zIndex={zIndex} onClose={onClose} 
+        onMinimize={onMinimize}  title="URL Shortener" updatePos={updatePos} pos={pos}
+
+      >
         {currentPage === 'mainpage' && <Mainpage />}
         {currentPage === 'stats' && <Stats />}
       </Window>

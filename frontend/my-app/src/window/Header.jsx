@@ -2,7 +2,7 @@ import './Header.css';
 import { Link } from "react-router-dom";
 
 
-function Header({ headerLinks = [], onMouseDown, onClose, title}) {
+function Header({ headerLinks = [], onMouseDown, onClose, onMinimize, title}) {
 
   return (
     <header className="header" onMouseDown={onMouseDown}>
@@ -20,7 +20,7 @@ function Header({ headerLinks = [], onMouseDown, onClose, title}) {
       </div>
 
       <div className="window-buttons">
-        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={onClose}>
+        <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={onMinimize}>
           _
         </button>
         {/* <button className="window-btn" onMouseDown={(e) => e.stopPropagation()} onClick={() => window.open('', '_blank')}>

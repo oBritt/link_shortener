@@ -4,7 +4,7 @@ import './Footer.css';
 import { useState, useEffect, useRef } from 'react';
 import osIcon from '../assets/os.png';
 
-function Footer() {
+function Footer({programs = [], onOpen, onClose}) {
   const [time, setTime] = useState(new Date());
   const [menuOpen, setMenuOpen] = useState(false);
   const menuAreaRef = useRef(null);     
@@ -56,6 +56,27 @@ function Footer() {
         <img src={osIcon} alt="OS" className="start-icon" />
         
       </button>
+
+      <div className='opened-programs'>
+        {
+          programs.map(p => {
+          if (!p.isOpened) return null;
+
+          return (
+            <button
+              key={p.id}
+              type="button"
+              title={p.name}
+              className={`programIcon-wrapper ${p.isMinimized ? 'minimized' : 'active'}`}
+              onClick={() => onOpen(p.id)}
+            >
+              <img src={p.icon} alt={p.name} className="programIcon" />
+            </button>
+          );
+        })
+        }
+
+      </div>
 
       <div className="clock">{formattedTime}</div>
     </footer>
